@@ -12,7 +12,7 @@ services:
         ports:
             - '8000:8000'
         volumes:
-            - 'flask:/flask'
+            - './flask:/flask'
 
     redis:
         image: redis:3.0-alpine
@@ -33,6 +33,19 @@ services:
             - ./.env.example
         volumes:
             - 'celery:/flask'
+
+    task-monitor:
+        build: ./flask
+        container_name: task-monitor
+        entrypoint: flower
+        command: -A quickslack.tasks.example
+        restart: unless-stopped
+        env_file:
+            - ./.env.example
+        volumes:
+            - 'celery:/flask'
+        ports:
+            - "5555:5555"
 
     postgres:
         image: postgres:latest

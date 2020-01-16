@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template
 from celery import Celery
 
 from quickslack.extensions import debug_toolbar, db
+from quickslack.routes.tests.api import test_api
 
 CELERY_TASK_LIST = [
     'quickslack.tasks.example',
@@ -34,6 +35,7 @@ def create_app(settings_override=None):
 	app.config.from_object('config.settings')
 
 	extensions(app)
+	app.register_blueprint(test_api)
 
 	@app.route('/')
 	def index():

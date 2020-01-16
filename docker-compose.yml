@@ -24,15 +24,15 @@ services:
         ports:
             - '6379:6379'
 
-    celery:
-        build: ./flask
-        container_name: celery
-        command: celery worker -B -l info -A quickslack.CELERY
-        restart: unless-stopped
-        env_file:
-            - ./.env.example
-        volumes:
-            - './flask:/flask'
+    # celery:
+    #     build: ./flask
+    #     container_name: celery
+    #     command: celery worker -B -l info -A quickslack.CELERY
+    #     restart: unless-stopped
+    #     env_file:
+    #         - ./.env.example
+    #     volumes:
+    #         - './flask:/flask'
 
     task-monitor:
         build: ./flask

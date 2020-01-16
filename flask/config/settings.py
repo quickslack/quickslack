@@ -13,17 +13,17 @@ SECRET_KEY = config('SECRET_KEY')
 SERVER_NAME = '127.0.0.1:8000'
 
 CELERY_BROKER_URL = 'redis://:devpassword@redis:6379/0'
-CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_RESULT_BACKEND = 'redis://:devpassword@redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_REDIS_MAX_CONNECTIONS = 5
-# CELERYBEAT_SCHEDULE = {
-#     'task_name': {
-#         'task': 'quickslack.tasks.example.first_task',
-#         'schedule': 30.0
-#     },
-# }
+CELERYBEAT_SCHEDULE = {
+    'task_name': {
+        'task': 'quickslack.tasks.example.first_task',
+        'schedule': 30.0
+    },
+}
 
 DB_NAME = config('DB_NAME')
 DB_USER = config('DB_USER')

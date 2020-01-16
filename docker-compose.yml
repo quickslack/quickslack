@@ -27,23 +27,23 @@ services:
     celery:
         build: ./flask
         container_name: celery
-        command: celery worker -B -l info -A quickslack.tasks.example
+        command: celery worker -B -l info -A quickslack.CELERY
         restart: unless-stopped
         env_file:
             - ./.env.example
         volumes:
-            - 'celery:/flask'
+            - './flask:/flask'
 
     task-monitor:
         build: ./flask
         container_name: task-monitor
         entrypoint: flower
-        command: -A quickslack.tasks.example
+        command: -A quickslack.CELERY
         restart: unless-stopped
         env_file:
             - ./.env.example
         volumes:
-            - 'celery:/flask'
+            - './flask:/flask'
         ports:
             - "5555:5555"
 
@@ -60,7 +60,4 @@ services:
 
 volumes:
     postgres:
-    flask:
-    rabbitmq:
     redis:
-    celery:

@@ -16,11 +16,11 @@ def sc_test():
     slack = SlackClient(
         config('SLACK_EMAIL'),
         config('SLACK_PASSWORD'),
-        'https://lambdaschoolstudents.slack.com/'
+        config('SLACK_WORKSPACE_URL')
     )
 
     slack.login()
 
     messages_data = slack.get_all_messages_from_channel(channel_id)
 
-    return render_template('dashboard.html', messages_data=messages_data)
+    return render_template('tests/dashboard.html', messages_data=messages_data)

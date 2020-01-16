@@ -12,7 +12,7 @@ services:
         ports:
             - '8000:8000'
         volumes:
-            - flask:/home/ubuntu/
+            - 'flask:/flask'
 
     redis:
         image: 'redis:3.0-alpine'
@@ -30,7 +30,7 @@ services:
         env_file:
             - ./.env.example
         volumes:
-        - 'celery:/home/ubuntu/'
+        - 'celery:/flask'
 
     postgres:
         image: postgres:latest

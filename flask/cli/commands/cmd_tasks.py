@@ -4,7 +4,7 @@ import subprocess, click, os
 @click.argument('path', default='')
 def cli(path):
 
-    full_path = os.path.join('scripts', path+'.py')
+    full_path = os.path.join('tasks', path+'.py')
 
     cmd = f'python {full_path}'
 

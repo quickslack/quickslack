@@ -6,7 +6,4 @@ sudo chmod +x /usr/local/bin/docker-compose
 git clone https://github.com/Distortedlogic/quickslack
 cd flask
 
-pip install gdown
-gdown -O out_filename --id id_here
-
 sudo docker-compose up --build

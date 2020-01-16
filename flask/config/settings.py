@@ -7,6 +7,8 @@ if config('FLASK_ENV') == 'development':
 else:
     DEBUG = False
 
+DEBUG = True
+
 SECRET_KEY = config('SECRET_KEY')
 SERVER_NAME = '127.0.0.1:8000'
 

@@ -23,5 +23,7 @@ python-decouple == 3.3
 # setup.py: 1
 setuptools == 44.0.0
 
+# not found by pigar
 gunicorn
 psycopg2-binary
+redis

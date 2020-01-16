@@ -17,6 +17,8 @@ def init():
     db.drop_all()
     db.create_all()
 
+    print('db init success...')
+
     return None
 
 @click.command()

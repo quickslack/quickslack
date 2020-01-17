@@ -1,7 +1,12 @@
 from flask import Flask, jsonify, render_template
 from celery import Celery
+from decouple import config
+from slack_user_client import SlackClient
 
-from quickslack.extensions import debug_toolbar, db
+from quickslack.extensions import (
+	debug_toolbar,
+	db
+)
 from quickslack.routes.tests.api import test_api
 
 CELERY_TASK_LIST = [
@@ -34,6 +39,14 @@ def create_app(settings_override=None):
 	app = Flask(__name__, instance_relative_config=True)
 	app.config.from_object('config.settings')
 
+	app.config['slack'] = SlackClient(
+		config('SLACK_EMAIL'),
+		config('SLACK_PASSWORD'),
+		config('SLACK_WORKSPACE_URL')
+	)
+
+	app.config['slack'].login()
+
 	extensions(app)
 	app.register_blueprint(test_api)
 
@@ -46,5 +59,4 @@ def create_app(settings_override=None):
 def extensions(app):
 	debug_toolbar.init_app(app)
 	db.init_app(app)
-
 	return None

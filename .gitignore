@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+tfServing/resnet/1/saved_model.pb
+tfServing/resnet/1/variables/variables.data-00000-of-00001

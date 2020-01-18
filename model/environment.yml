@@ -1,0 +1,16 @@
+name: pytorch_inference
+
+channels:
+        - conda-forge
+        - pytorch
+dependencies:
+        - jupyter
+        - pytorch
+        - pip
+        - numpy
+        - protobuf
+        - pip:
+                - torch
+                - transformers
+                - onnx
+                - future

@@ -47,8 +47,13 @@ def create_celery_app(app=None):
     return celery
 
 def create_app(settings_override=None):
+	import sentry_sdk
+	sentry_sdk.init(
+		dsn="https://8da7ef327cab437dbeef65a125a66286@sentry.io/1886929", #config('SENTRY_DNS'),
+		integrations=[FlaskIntegration()]
+	)
 	app = Flask(__name__, instance_relative_config=True)
-	app.config.from_object('config.settings')
+	app.config.from_object('config.flask')
 
 	extensions(app)
 	app.register_blueprint(dashboard)
@@ -66,7 +71,7 @@ def create_app(settings_override=None):
 	def index():
 		return render_template('layouts/dashboard.html')
 
-	@app.route('/debug-sentry')
+	@app.route('/debug_sentry')
 	def trigger_error():
 		division_by_zero = 1 / 0
 
@@ -78,10 +83,13 @@ def extensions(app):
 	debug_toolbar.init_app(app)
 	db.init_app(app)
 
-	integrate_sentry(FlaskIntegration)
-	integrate_sentry(CeleryIntegration)
-	integrate_sentry(RedisIntegration)
-	integrate_sentry(SqlalchemyIntegration)
+	temp = config('SENTRY_DNS')
+	app.logger.info(f'{temp}')
+
+	# integrate_sentry(FlaskIntegration)
+	# integrate_sentry(CeleryIntegration)
+	# integrate_sentry(RedisIntegration)
+	# integrate_sentry(SqlalchemyIntegration)
 
 	app.logger.info('Extensions started...')
 	return None

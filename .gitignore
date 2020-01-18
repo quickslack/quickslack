@@ -129,3 +129,9 @@ dmypy.json
 .pyre/
 tfServing/resnet/1/saved_model.pb
 tfServing/resnet/1/variables/variables.data-00000-of-00001
+tensorflow_serving/model_volume/models/iris/2/variables/variables.index
+tensorflow_serving/model_volume/models/iris/2/variables/variables.data-00000-of-00001
+tensorflow_serving/model_volume/models/iris/2/saved_model.pb
+tensorflow_serving/model_volume/models/iris/1/variables/variables.index
+tensorflow_serving/model_volume/models/iris/1/saved_model.pb
+tensorflow_serving/model_volume/models/distilgpt2/saved_model.pb

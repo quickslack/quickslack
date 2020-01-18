@@ -59,12 +59,12 @@ services:
             - "5432:5432"
 
     tf-serving:
-        build: ./tensorflow_serving_tutorial
+        build: ./tensorflow_serving
         container_name: tf-serving
         command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf
         restart: unless-stopped
         volumes:
-            - './tensorflow_serving_tutorial/model_volume:/home'
+            - './tensorflow_serving/model_volume:/home'
         ports:
             - "8500:8500"
             - "8501:8501"

@@ -10,10 +10,10 @@ from sentry_sdk.integrations.redis import RedisIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from quickslack.routes.dashboard.views import dashboard
+from quickslack.sentry import integrate_sentry
 from quickslack.extensions import (
 	debug_toolbar,
-	db,
-	integrate_sentry
+	db
 )
 
 import logging, logging.config, yaml
@@ -47,11 +47,14 @@ def create_celery_app(app=None):
     return celery
 
 def create_app(settings_override=None):
-	import sentry_sdk
-	sentry_sdk.init(
-		dsn="https://8da7ef327cab437dbeef65a125a66286@sentry.io/1886929", #config('SENTRY_DNS'),
-		integrations=[FlaskIntegration()]
-	)
+	# import sentry_sdk
+	# sentry_sdk.init(
+	# 	dsn=config('SENTRY_DNS'),
+	# 	integrations=[FlaskIntegration()]
+	# )
+	integrate_sentry(FlaskIntegration)
+	# sentry()
+
 	app = Flask(__name__, instance_relative_config=True)
 	app.config.from_object('config.flask')
 
@@ -77,19 +80,17 @@ def create_app(settings_override=None):
 
 	return app
 
+def sentry():
+	integrate_sentry(CeleryIntegration)
+	integrate_sentry(RedisIntegration)
+	integrate_sentry(SqlalchemyIntegration)
+
+
 def extensions(app):
 	app.logger = logging.getLogger('root')
 
 	debug_toolbar.init_app(app)
 	db.init_app(app)
-
-	temp = config('SENTRY_DNS')
-	app.logger.info(f'{temp}')
-
-	# integrate_sentry(FlaskIntegration)
-	# integrate_sentry(CeleryIntegration)
-	# integrate_sentry(RedisIntegration)
-	# integrate_sentry(SqlalchemyIntegration)
 
 	app.logger.info('Extensions started...')
 	return None

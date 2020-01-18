@@ -24,7 +24,7 @@ services:
         ports:
             - '6379:6379'
 
-    # celery:
+    # beat:
     #     build: ./flask
     #     container_name: celery
     #     command: celery worker -B -l info -A quickslack.CELERY

@@ -16,5 +16,6 @@ COPY . .
 
 RUN pip install --editable .
 RUN pip install git+https://github.com/quickslack/slack-user-client
+RUN pip install --upgrade 'sentry-sdk[flask]==0.14.0'
 
 CMD gunicorn -c "python:config.gunicorn" "quickslack.app:create_app()"

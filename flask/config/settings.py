@@ -11,9 +11,6 @@ DEBUG = True
 
 SECRET_KEY = config('SECRET_KEY')
 SERVER_NAME = '127.0.0.1:8000'
-SLACK_WORKSPACE_URL = 'https://lambdaschoolstudents.slack.com/'
-SLACK_PASSWORD = ''
-SLACK_EMAIL = ''
 
 CELERY_BROKER_URL = 'redis://:devpassword@redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://:devpassword@redis:6379/0'

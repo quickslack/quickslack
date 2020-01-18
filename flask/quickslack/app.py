@@ -1,13 +1,24 @@
 from flask import Flask, jsonify, render_template
 from celery import Celery
 from decouple import config
+
 from slack_user_client import SlackClient
 
+from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+
+from quickslack.routes.dashboard.views import dashboard
 from quickslack.extensions import (
 	debug_toolbar,
-	db
+	db,
+	integrate_sentry
 )
-from quickslack.routes.tests.api import test_api
+
+import logging, logging.config, yaml
+# logging.config.dictConfig(yaml.load(open('config/logging.conf')))
+logging.config.fileConfig('config/logging.conf')
 
 CELERY_TASK_LIST = [
     'quickslack.tasks.example',
@@ -39,24 +50,38 @@ def create_app(settings_override=None):
 	app = Flask(__name__, instance_relative_config=True)
 	app.config.from_object('config.settings')
 
+	extensions(app)
+	app.register_blueprint(dashboard)
+
+	app.logger.info('Initializing Slack Client...')
 	app.config['slack'] = SlackClient(
 		config('SLACK_EMAIL'),
 		config('SLACK_PASSWORD'),
 		config('SLACK_WORKSPACE_URL')
 	)
-
+	app.logger.info('Logging into Slack...')
 	app.config['slack'].login()
-
-	extensions(app)
-	app.register_blueprint(test_api)
 
 	@app.route('/')
 	def index():
-		return render_template('base.html')
+		return render_template('layouts/dashboard.html')
+
+	@app.route('/debug-sentry')
+	def trigger_error():
+		division_by_zero = 1 / 0
 
 	return app
 
 def extensions(app):
+	app.logger = logging.getLogger('root')
+
 	debug_toolbar.init_app(app)
 	db.init_app(app)
+
+	integrate_sentry(FlaskIntegration)
+	integrate_sentry(CeleryIntegration)
+	integrate_sentry(RedisIntegration)
+	integrate_sentry(SqlalchemyIntegration)
+
+	app.logger.info('Extensions started...')
 	return None

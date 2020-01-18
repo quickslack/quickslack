@@ -10,12 +10,12 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 RUN curl -s https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
 
-RUN apt-get update && apt-get install -y \
-        tensorflow-model-server
+RUN apt-get update && apt-get install -y tensorflow-model-server
 
-RUN  apt-get clean && \
-        rm -rf /var/lib/apt/lists/*
+RUN  apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY ./model_volume/ /home/
+WORKDIR /home
 
-CMD tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=/home/configs/models.conf
+COPY ./model_volume/ .
+
+CMD tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf

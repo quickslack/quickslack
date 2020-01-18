@@ -26,7 +26,7 @@ services:
 
     # beat:
     #     build: ./flask
-    #     container_name: celery
+    #     container_name: beat
     #     command: celery worker -B -l info -A quickslack.CELERY
     #     restart: unless-stopped
     #     env_file:
@@ -61,10 +61,10 @@ services:
     tf-serving:
         build: ./tensorflow_serving_tutorial
         container_name: tf-serving
-        command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=/home/configs/models.conf
+        command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf
         restart: unless-stopped
         volumes:
-            - ./tensorflow_serving_tutorial/model_volume/:/home/model_volume/
+            - './tensorflow_serving_tutorial/model_volume:/home'
         ports:
             - "8500:8500"
             - "8501:8501"

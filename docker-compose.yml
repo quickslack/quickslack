@@ -8,7 +8,7 @@ services:
         container_name: flask
         restart: unless-stopped
         env_file:
-            - ./.env.example
+            - ./.env
         ports:
             - '8000:8000'
         volumes:
@@ -24,15 +24,15 @@ services:
         ports:
             - '6379:6379'
 
-    celery:
-        build: ./flask
-        container_name: celery
-        command: celery worker -B -l info -A quickslack.CELERY
-        restart: unless-stopped
-        env_file:
-            - ./.env.example
-        volumes:
-            - './flask:/flask'
+    # beat:
+    #     build: ./flask
+    #     container_name: beat
+    #     command: celery worker -B -l info -A quickslack.CELERY
+    #     restart: unless-stopped
+    #     env_file:
+    #         - ./.env
+    #     volumes:
+    #         - './flask:/flask'
 
     task-monitor:
         build: ./flask
@@ -41,7 +41,7 @@ services:
         command: -A quickslack.CELERY
         restart: unless-stopped
         env_file:
-            - ./.env.example
+            - ./.env
         volumes:
             - './flask:/flask'
         ports:
@@ -52,11 +52,22 @@ services:
         container_name: postgres
         restart: unless-stopped
         env_file:
-            - ./.env.example
+            - ./.env
         volumes:
             - postgres:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+
+    tf-serving:
+        build: ./tensorflow_serving
+        container_name: tf-serving
+        command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf
+        restart: unless-stopped
+        volumes:
+            - './tensorflow_serving:/home'
+        ports:
+            - "8500:8500"
+            - "8501:8501"
 
 volumes:
     postgres:

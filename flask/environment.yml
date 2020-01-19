@@ -1,8 +1,0 @@
-name: quickslack
-channels:
-  - defaults
-  - conda-forge
-dependencies:
-  - python=3.7
-prefix: C:\Users\jerme\Anaconda3\envs\quickslack
-

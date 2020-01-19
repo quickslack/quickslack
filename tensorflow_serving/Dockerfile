@@ -17,6 +17,13 @@ RUN  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home
 
-COPY ./model_volume/ .
+ENV PYTHONUNBUFFERED 1
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . .
+
+RUN pip install --editable .
 
 CMD tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf

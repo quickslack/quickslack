@@ -80,10 +80,10 @@ def create_app(settings_override=None):
 
 	return app
 
-def sentry():
-	integrate_sentry(CeleryIntegration)
-	integrate_sentry(RedisIntegration)
-	integrate_sentry(SqlalchemyIntegration)
+# def sentry():
+# 	integrate_sentry(CeleryIntegration)
+# 	integrate_sentry(RedisIntegration)
+# 	integrate_sentry(SqlalchemyIntegration)
 
 
 def extensions(app):

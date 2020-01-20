@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  api:
+    volumes:
+      - '.:/api'
+    container_name: model-api
+    restart: always
+    build: .
+    command: python app.py 
+    ports:
+      - "5000:5000"

@@ -61,3 +61,7 @@ psycopg2-binary
 redis
 flower
 wheel
+
+git+https://github.com/quickslack/slack-user-client
+sentry-sdk[flask]==0.14.0
+

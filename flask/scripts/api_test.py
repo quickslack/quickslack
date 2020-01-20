@@ -2,9 +2,9 @@ import requests
 import json
 
 if __name__ == '__main__':
-    url = 'http://127.0.0.1:8080/predict'
-    # url = 'http://model-api:8080/predict'
-    # url = 'http://0.0.0.0:8080/predict'
+    url = 'http://model:8080/predict'
+    # url = 'http://model-api:8000/predict'
+    # url = 'http://0.0.0.0:5000/predict'
     input_text = 'My favorite flavor of ice cream is'
 
     val = {'input_text': input_text}

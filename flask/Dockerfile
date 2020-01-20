@@ -1,0 +1,21 @@
+FROM python:3.7.6-buster
+
+RUN apt-get update && apt-get install -qq -y \
+  build-essential libpq-dev python3-setuptools --no-install-recommends
+
+ENV INSTALL_PATH /flask
+RUN mkdir $INSTALL_PATH
+WORKDIR $INSTALL_PATH
+
+ENV PYTHONUNBUFFERED 1
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . .
+
+RUN pip install --editable .
+RUN pip install git+https://github.com/quickslack/slack-user-client
+RUN pip install --upgrade 'sentry-sdk[flask]==0.14.0'
+
+CMD gunicorn -c "python:config.gunicorn" "quickslack.app:create_app()"

@@ -1,0 +1,9 @@
+language: python
+service: docker
+
+branches:
+    only:
+      - travis-testing
+script:
+    - docker-compose version
+    - docker version

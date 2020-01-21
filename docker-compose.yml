@@ -55,9 +55,7 @@ services:
         build: './model'
         command: gunicorn -c "python:config.gunicorn" --reload "api.app:create_app()"
         volumes:
-        - './model:/api'
-        ports:
-        - "8080:8080"
+            - './model:/api'
 
 volumes:
     postgres:

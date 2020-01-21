@@ -1,9 +1,20 @@
 language: python
 service: docker
 
+env:
+  - DOCKER_COMPOSE_VERSION=1.25.1
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 branches:
     only:
       - travis-testing
 script:
     - docker-compose version
     - docker version
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_AUTH\"}}}" > ~/.docker/config.json
+    - docker-compose build

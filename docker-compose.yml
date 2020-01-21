@@ -16,16 +16,6 @@ services:
         volumes:
             - 'redis:/var/lib/redis/data'
 
-    # beat:
-    #     build: ./flask
-    #     container_name: beat
-    #     command: celery worker -B -l info -A quickslack.CELERY
-    #     restart: unless-stopped
-    #     env_file:
-    #         - ./.env
-    #     volumes:
-    #         - './flask:/flask'
-
     task-monitor:
         build: ./flask
         container_name: task-monitor

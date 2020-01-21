@@ -18,5 +18,4 @@ script:
     - docker version
     - mkdir ~/.docker
     - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json
-    - echo $COMPOSE_FILE
-    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+    - docker-compose build

@@ -4,11 +4,17 @@ services:
 
     flask:
         build: ./flask
-        command: gunicorn -c "python:config.gunicorn" --reload "quickslack.app:create_app()"
+        depends_on:
+            - postgres
+            - redis
+        #command: gunicorn -c "python:config.gunicorn" --reload "quickslack.app:create_app()"
+        command: flask run --host=0.0.0.0
         container_name: flask
         restart: unless-stopped
         env_file:
             - ./.env
+        environment:
+            FLASK_RUN_PORT: 8000
         ports:
             - '8000:8000'
         volumes:

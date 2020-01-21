@@ -15,8 +15,6 @@ RUN pip install -r requirements.txt
 COPY . .
 
 RUN pip install --editable .
-RUN pip install git+https://github.com/quickslack/slack-user-client
-RUN pip install --upgrade 'sentry-sdk[flask]==0.14.0'
 RUN useradd flask
 RUN chown flask:flask .
 USER flask

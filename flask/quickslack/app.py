@@ -11,27 +11,33 @@ from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from quickslack.routes.dashboard.views import dashboard
 from quickslack.sentry import integrate_sentry
+from flask_migrate import Migrate
 from quickslack.extensions import (
-	debug_toolbar,
-	db
+    debug_toolbar,
+    db
 )
 
-import logging, logging.config, yaml
+import logging
+import logging.config
+import yaml
+# Import at least 1 table for the model to be picked up by Flask-Migrate et al.
+from .schemas import Message
+
 # logging.config.dictConfig(yaml.load(open('config/logging.conf')))
 logging.config.fileConfig('config/logging.conf')
-
 CELERY_TASK_LIST = [
     'quickslack.tasks.example',
 ]
+
 
 def create_celery_app(app=None):
     app = app or create_app()
 
     celery = Celery(
-		app.import_name,
-		broker=app.config['CELERY_BROKER_URL'],
-		include=CELERY_TASK_LIST
-	)
+        app.import_name,
+        broker=app.config['CELERY_BROKER_URL'],
+        include=CELERY_TASK_LIST
+    )
 
     celery.conf.update(app.config)
     TaskBase = celery.Task
@@ -46,39 +52,45 @@ def create_celery_app(app=None):
     celery.Task = ContextTask
     return celery
 
+
 def create_app(settings_override=None):
-	# import sentry_sdk
-	# sentry_sdk.init(
-	# 	dsn=config('SENTRY_DNS'),
-	# 	integrations=[FlaskIntegration()]
-	# )
-	integrate_sentry(FlaskIntegration)
-	# sentry()
+    # import sentry_sdk
+    # sentry_sdk.init(
+    # 	dsn=config('SENTRY_DNS'),
+    # 	integrations=[FlaskIntegration()]
+    # )
+    integrate_sentry(FlaskIntegration)
+    # sentry()
 
-	app = Flask(__name__, instance_relative_config=True)
-	app.config.from_object('config.flask')
+    app = Flask(__name__, instance_relative_config=True)
+    Migrate(app, db)
+    app.config.from_object('config.flask')
+    # logging.basicConfig(filename='myapp.log', level=logging.INFO)
 
-	extensions(app)
-	app.register_blueprint(dashboard)
+    extensions(app)
+    app.register_blueprint(dashboard)
+    logging.info('Started')
 
-	app.logger.info('Initializing Slack Client...')
-	app.config['slack'] = SlackClient(
-		config('SLACK_EMAIL'),
-		config('SLACK_PASSWORD'),
-		config('SLACK_WORKSPACE_URL')
-	)
-	app.logger.info('Logging into Slack...')
-	app.config['slack'].login()
+    app.logger.info('Initializing Slack Client...')
+    app.config['slack'] = SlackClient(
+        config('SLACK_EMAIL'),
+        config('SLACK_PASSWORD'),
+        config('SLACK_WORKSPACE_URL')
+    )
+    app.logger.info('Logging into Slack...')
 
-	@app.route('/')
-	def index():
-		return render_template('layouts/dashboard.html')
+    # app.config['slack'].login()
 
-	@app.route('/debug_sentry')
-	def trigger_error():
-		division_by_zero = 1 / 0
+    @app.route('/')
+    def index():
+        return render_template('layouts/dashboard.html')
 
-	return app
+    @app.route('/debug_sentry')
+    def trigger_error():
+        division_by_zero = 1 / 0
+
+    return app
+
 
 # def sentry():
 # 	integrate_sentry(CeleryIntegration)
@@ -87,10 +99,10 @@ def create_app(settings_override=None):
 
 
 def extensions(app):
-	app.logger = logging.getLogger('root')
+    app.logger = logging.getLogger('root')
 
-	debug_toolbar.init_app(app)
-	db.init_app(app)
+    debug_toolbar.init_app(app)
+    db.init_app(app)
 
-	app.logger.info('Extensions started...')
-	return None
+    app.logger.info('Extensions started...')
+    return None

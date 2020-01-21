@@ -142,3 +142,8 @@ tensorflow_serving/model_volume/models/iris/2/saved_model.pb
 tensorflow_serving/model_volume/models/iris/1/variables/variables.index
 tensorflow_serving/model_volume/models/iris/1/saved_model.pb
 tensorflow_serving/model_volume/models/distilgpt2/saved_model.pb
+
+# dev settings
+.devcontainer/
+.vscode/
+.idea/

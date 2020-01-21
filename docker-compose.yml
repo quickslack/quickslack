@@ -1,13 +1,10 @@
 version: '3.7'
 services:
-
     flask:
         build: ./flask
         command: gunicorn -c "python:config.gunicorn" --reload "quickslack.app:create_app()"
         container_name: flask
         restart: unless-stopped
-        env_file:
-            - ./.env
         volumes:
             - './flask:/flask'
 
@@ -44,8 +41,6 @@ services:
         image: postgres:latest
         container_name: postgres
         restart: unless-stopped
-        env_file:
-            - ./.env
         volumes:
             - postgres:/var/lib/postgresql/data
 

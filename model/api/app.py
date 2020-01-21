@@ -7,13 +7,14 @@ from tqdm import trange
 import time
 from .utils.torch import top_k_top_p_filtering
 
+num_words = 50
+device = torch.device('cpu')
+# model.to(device)
+
+
+
 def create_app():
     app = Flask(__name__)
-
-    num_words = 50
-    device = torch.device('cpu')
-
-    # model.to(device)
 
     def sample_sequence(
         model,
@@ -44,7 +45,7 @@ def create_app():
                 generated = torch.cat((generated, next_token.unsqueeze(0)), dim=1)
         return generated
 
-    def get_output(input_text):
+    def get_output(model, input_text, tokenizer):
         indexed_tokens = tokenizer.encode(input_text)
         output = sample_sequence(model, num_words, indexed_tokens, device=device)
         return tokenizer.decode(
@@ -61,7 +62,7 @@ def create_app():
             lines = request.get_json(force=True)
             input_text = lines['input_text']
             time_now = time.time()
-            output_text = get_output(input_text)
+            output_text = get_output(model, input_text, tokenizer)
             time_to_predict = time.time() - time_now
             return jsonify({
                 'input_text': input_text,

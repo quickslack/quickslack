@@ -60,7 +60,7 @@ services:
 
     api:
         container_name: model
-        restart: always
+        restart: unless-stopped
         build: './model'
         command: gunicorn -c "python:config.gunicorn" --reload "api.app:create_app()"
         volumes:

@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  flask:
+    ports:
+      - 8000:8000
+  redis:
+    ports:
+      - 5432:5432
+  postgres:
+    ports:
+      - 5432:5432
+  task-monitor:
+    ports:
+      - 5555:5555

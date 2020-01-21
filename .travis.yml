@@ -1,8 +1,8 @@
 language: python
 service: docker
-
+dist: bionic
 env:
-  - DOCKER_COMPOSE_VERSION=1.25.2
+  - DOCKER_COMPOSE_VERSION=1.25.1
 
 before_install:
   #- sudo rm /usr/local/bin/docker-compose

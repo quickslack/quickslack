@@ -1,6 +1,8 @@
 version: '3.7'
 services:
   flask:
+    env_file:
+      - ./.env
     ports:
       - 8000:8000
   redis:

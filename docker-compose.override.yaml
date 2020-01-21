@@ -14,5 +14,7 @@ services:
     ports:
       - 5432:5432
   task-monitor:
+    env_file:
+      - ./.env
     ports:
       - 5555:5555

@@ -27,12 +27,4 @@ script:
     # retry push to fix bug: https://github.com/docker/compose/issues/6837
     - #docker-compose push||docker-compose push
     - docker image ls
-    # step by step
-    - docker-compose config
-    - echo "test"|grep te
-    - docker-compose config|grep images
-    - "docker-compose config|grep images:|awk '{$1=$1};1'"
-    # print put the images to be built
-    - "docker-compose config|grep images:|awk '{$1=$1};1'|xargs echo"
-    # pull the images
-    - "docker-compose config|grep images:|awk '{$1=$1};1'|xargs docker pull"
+    - "docker-compose config|grep image:|awk '{$1=$1};1'|xargs docker pull"

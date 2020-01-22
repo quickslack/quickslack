@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  flask:
+    image: quickslack/webapp:${BUILD_TAG}
+  model:
+    image: quickslack/model:${BUILD_TAG}
+

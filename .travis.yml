@@ -12,15 +12,16 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  #- sudo echo "{}" > /etc/docker/daemon.json
-
+  - find . -name Dockerfile -exec sed -i -r 's/\-\-mount..[^ ]+\s//g' {} +
+  - find . -name Dockerfile -exec sed -i -r 's/#\ssyntax.+experimental//g' {} +
+  - export BUILD_TAG=$TRAVIS_BRANCH
 branches:
     only:
       - travis-testing
 script:
+  -
     - docker-compose version
     - docker version
     - mkdir ~/.docker
-    - find . -name Dockerfile -exec sed -i -r 's/\-\-mount..[^ ]+\s//g' {} +
-    - find . -name Dockerfile -exec sed -i -r 's/#\ssyntax.+experimental//g' {} +
     - docker-compose build
+    - docker-compose -f docker-compose.yml -f docker-compose.build.yml push

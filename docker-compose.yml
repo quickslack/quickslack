@@ -22,7 +22,6 @@ services:
         entrypoint: flower
         command: -A quickslack.CELERY
         restart: unless-stopped
-
         volumes:
             - './flask:/flask'
 

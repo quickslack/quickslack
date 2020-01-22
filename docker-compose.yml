@@ -7,7 +7,6 @@ services:
         restart: unless-stopped
         volumes:
             - './flask:/flask'
-
     redis:
         image: redis:3.0-alpine
         container_name: redis
@@ -15,16 +14,6 @@ services:
         restart: unless-stopped
         volumes:
             - 'redis:/var/lib/redis/data'
-
-    task-monitor:
-        build: ./flask
-        container_name: task-monitor
-        entrypoint: flower
-        command: -A quickslack.CELERY
-        restart: unless-stopped
-        volumes:
-            - './flask:/flask'
-
     postgres:
         image: postgres:latest
         container_name: postgres

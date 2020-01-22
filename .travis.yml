@@ -3,10 +3,6 @@ service: docker
 dist: bionic
 env:
   - DOCKER_COMPOSE_VERSION=1.25.1
-addons:
-  apt:
-    packages:
-      - docker-ce
 before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -25,4 +21,4 @@ script:
     - docker version
     - mkdir ~/.docker
     ###- echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json
-    - docker-compose build
+    - docker-compose build --no-cache

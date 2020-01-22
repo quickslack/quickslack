@@ -22,4 +22,5 @@ script:
     - docker version
     - mkdir ~/.docker
     - find . -name Dockerfile -exec sed -i -r 's/\-\-mount..[^ ]+\s//g' {} +
+    - find . -name Dockerfile -exec sed -i -r 's/#\ssyntax.+experimental//g' {} +
     - docker-compose build

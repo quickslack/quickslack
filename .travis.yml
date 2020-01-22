@@ -27,3 +27,4 @@ script:
     # retry push to fix bug: https://github.com/docker/compose/issues/6837
     - docker-compose push||docker-compose push
     - docker image ls
+    - docker-compose config

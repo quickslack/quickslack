@@ -16,7 +16,7 @@ before_install:
   - find . -name Dockerfile -exec sed -i -r 's/#\ssyntax.+experimental//g' {} +
   - export BUILD_TAG=$TRAVIS_BRANCH
   - mkdir ~/.docker
-  - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > /kaniko/.docker/config.json
+  - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json
 branches:
   only:
         - travis-testing

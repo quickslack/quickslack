@@ -28,7 +28,7 @@ script:
     - #docker-compose push||docker-compose push
     - docker image ls
     # step by step
-    - "docker-compose config|grep images:"
+    - "docker-compose config|grep images"
     - "docker-compose config|grep images:|awk '{$1=$1};1'"
     # print put the images to be built
     - "docker-compose config|grep images:|awk '{$1=$1};1'|xargs echo"

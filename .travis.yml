@@ -22,5 +22,6 @@ branches:
   only:
         - travis-testing
 script:
+    - docker-compose pull
     - docker-compose build
     - docker-compose push

@@ -20,5 +20,6 @@ script:
     - docker-compose version
     - docker version
     - mkdir ~/.docker
+    - mkdir /tmp
     ###- echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json
     - docker-compose build --no-cache

@@ -17,6 +17,7 @@ before_install:
   - export BUILD_TAG=$TRAVIS_BRANCH
   - mkdir ~/.docker
   - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json
+#
 branches:
   only:
         - travis-testing

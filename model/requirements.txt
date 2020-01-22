@@ -17,6 +17,6 @@ torch == 1.4.0
 # api\app.py: 6
 tqdm == 4.36.1
 
-transformers==2.3.0
+transformers == 2.3.0
 
 gunicorn

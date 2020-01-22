@@ -72,7 +72,15 @@ def create_app(settings_override=None):
 
 	@app.route('/')
 	def index():
-		return render_template('layouts/dashboard.html')
+		render_kwargs ={'include_logs': True}
+		try:
+			with open('logs/flaskapp.log', 'r') as f:
+				render_kwargs['log_file'] = f.readlines()
+		except Exception as e:
+			app.logger.info(str(e))
+		app.logger.info('render_kwargs')
+
+		return render_template('layouts/dashboard.html', **render_kwargs)
 
 	@app.route('/debug_sentry')
 	def trigger_error():

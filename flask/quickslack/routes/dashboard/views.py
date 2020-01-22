@@ -19,7 +19,8 @@ def dashboard_display():
     render_kwargs = {
         'channel_form': channel_form,
         'text_form': text_form,
-        'payload': []
+        'payload': [],
+        'include_logs': False
 
     }
 

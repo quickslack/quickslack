@@ -16,7 +16,7 @@ before_install:
   - find . -name Dockerfile -exec sed -i -r 's/#\ssyntax.+experimental//g' {} +
   - export BUILD_TAG=$TRAVIS_BRANCH
   - export SSH_KEYFILE=$(mktemp)
-  - echo echo $CI_SSH_KEY > $SSH_KEYFILE
+  - echo $CI_SSH_KEY > $SSH_KEYFILE
   - chmod 600 $SSH_KEYFILE
   - mkdir ~/.docker
   - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$CI_REGISTRY_AUTH\"}}}" > ~/.docker/config.json

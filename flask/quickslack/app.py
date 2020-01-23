@@ -10,14 +10,14 @@ from sentry_sdk.integrations.redis import RedisIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from quickslack.routes.dashboard.views import dashboard
+from quickslack.routes.api.slackevents import slackevents
 from quickslack.sentry import integrate_sentry
 from quickslack.extensions import (
 	debug_toolbar,
 	db
 )
 
-import logging, logging.config, yaml
-# logging.config.dictConfig(yaml.load(open('config/logging.conf')))
+import logging, logging.config
 logging.config.fileConfig('config/logging.conf')
 
 CELERY_TASK_LIST = [
@@ -47,11 +47,6 @@ def create_celery_app(app=None):
     return celery
 
 def create_app(settings_override=None):
-	# import sentry_sdk
-	# sentry_sdk.init(
-	# 	dsn=config('SENTRY_DNS'),
-	# 	integrations=[FlaskIntegration()]
-	# )
 	integrate_sentry(FlaskIntegration)
 	# sentry()
 
@@ -60,6 +55,7 @@ def create_app(settings_override=None):
 
 	extensions(app)
 	app.register_blueprint(dashboard)
+	app.register_blueprint(slackevents)
 
 	app.logger.info('Initializing Slack Client...')
 	app.config['slack'] = SlackClient(
@@ -72,7 +68,15 @@ def create_app(settings_override=None):
 
 	@app.route('/')
 	def index():
-		return render_template('layouts/dashboard.html')
+		render_kwargs = {'include_logs': True}
+		try:
+			with open('logs/flaskapp.log', 'r') as f:
+				render_kwargs['log_file'] = f.readlines()
+		except Exception as e:
+			app.logger.info(str(e))
+		app.logger.info('render_kwargs')
+
+		return render_template('layouts/dashboard.html', **render_kwargs)
 
 	@app.route('/debug_sentry')
 	def trigger_error():

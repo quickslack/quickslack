@@ -18,12 +18,18 @@
 
 			<div class="row">
 				<div class="col">
-					{% block flash_messages %}{% endblock %}
+					<div class="row">
+						{% block flash_messages %}{% endblock %}
+					</div>
 					
 					<div class="row">
 						<div class="col">
 							{% block content %}{% endblock %}
 						</div>
+					</div>
+
+					<div class="row">
+						{% block logs %}{% endblock %}
 					</div>
 				</div>
 				

@@ -49,6 +49,14 @@ services:
         volumes:
             - postgres:/var/lib/postgresql/data
 
+    api:
+        container_name: model
+        restart: unless-stopped
+        build: './model'
+        command: gunicorn -c "python:config.gunicorn" --reload "api.app:create_app()"
+        volumes:
+            - './model:/api'
+
 volumes:
     postgres:
     redis:

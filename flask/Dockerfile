@@ -1,8 +1,8 @@
 # syntax = docker/dockerfile:experimental
 FROM python:3.7.6-buster
 
-RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt apt-get update && apt-get install -qq -y \
-  build-essential libpq-dev python3-setuptools --no-install-recommends
+RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt apt-get update \
+	&& apt-get install -qq -y build-essential libpq-dev python3-setuptools --no-install-recommends
 
 ENV INSTALL_PATH /flask
 RUN mkdir $INSTALL_PATH

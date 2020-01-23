@@ -9,3 +9,10 @@ class Channel(FlaskForm):
         validators=[DataRequired(), Length(min=2, max=20)]
     )
     submit = SubmitField('Start Test')
+
+class Text(FlaskForm):
+    input_text = StringField(
+        'Input Text',
+        validators=[DataRequired(), Length(min=2, max=50)]
+    )
+    submit = SubmitField('Start Test')

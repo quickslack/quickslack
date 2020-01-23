@@ -2,7 +2,7 @@
 service: docker
 dist: bionic
 env:
-  - DOCKER_COMPOSE_VERSION=1.25.0
+  - DOCKER_COMPOSE_VERSION=1.25.1
 addons:
   apt:
     packages:

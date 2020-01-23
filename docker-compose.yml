@@ -1,20 +1,14 @@
+
 version: '3.7'
 services:
+
     flask:
         build: ./flask
-        depends_on:
-            - postgres
-            - redis
-        #command: gunicorn -c "python:config.gunicorn" --reload "quickslack.app:create_app()"
-        command: flask run --host=0.0.0.0
+        command: gunicorn -c "python:config.gunicorn" --reload "quickslack.app:create_app()"
         container_name: flask
         restart: unless-stopped
         env_file:
             - ./.env
-        environment:
-            FLASK_RUN_PORT: 8000
-        ports:
-            - '8000:8000'
         volumes:
             - './flask:/flask'
 
@@ -25,6 +19,17 @@ services:
         restart: unless-stopped
         volumes:
             - 'redis:/var/lib/redis/data'
+
+
+    # beat:
+    #     build: ./flask
+    #     container_name: beat
+    #     command: celery worker -B -l info -A quickslack.CELERY
+    #     restart: unless-stopped
+    #     env_file:
+    #         - ./.env
+    #     volumes:
+    #         - './flask:/flask'
 
     task-monitor:
         build: ./flask
@@ -45,17 +50,6 @@ services:
             - ./.env
         volumes:
             - postgres:/var/lib/postgresql/data
-
-    tf-serving:
-        build: ./tensorflow_serving
-        container_name: tf-serving
-        command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_config_file=configs/models.conf
-        restart: unless-stopped
-        volumes:
-            - './tensorflow_serving:/home'
-        ports:
-            - "8500:8500"
-            - "8501:8501"
 
 volumes:
     postgres:

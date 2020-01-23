@@ -2,12 +2,12 @@ from decouple import config
 from datetime import timedelta
 from celery.schedules import crontab
 
-if config('FLASK_ENV') == 'development':
-    DEBUG = True
-else:
-    DEBUG = False
+# if config('FLASK_ENV') == 'development':
+#     DEBUG = True
+# else:
+#     DEBUG = False
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = config('SECRET_KEY')
 # SERVER_NAME = '127.0.0.1:8000'

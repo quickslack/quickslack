@@ -11,7 +11,7 @@ python-decouple == 3.3
 requests == 2.22.0
 
 # api\app.py: 4,5
-# api\utils\torch.py: 1
+# api\utils\torch.py: 1,2
 torch == 1.4.0
 
 # api\app.py: 6

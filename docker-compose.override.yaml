@@ -3,9 +3,6 @@ services:
   flask:
     ports:
       - 8000:8000
-  redis:
-    ports:
-      - 5432:5432
   postgres:
     ports:
       - 5432:5432

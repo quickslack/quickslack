@@ -6,7 +6,8 @@ from slack_user_client import SlackClient
 from decouple import config
 from quickslack.schemas import Reply, Message, Channel
 from tqdm import tqdm
-
+import json
+from json.decoder import JSONDecodeError
 app = create_app()
 db.app = app
 
@@ -28,6 +29,11 @@ def all_messages():
     private_ids = [c['id'] for c in channels if c['is_private']]
     public_channels = [c for c in all_channels if c['id'] not in private_ids]
     channels_to_add = []
+    # Add joined public channel.
+    # For some reasons these don't show up on searches with the
+    # query: ''
+    public_channels = public_channels + \
+                      [c for c in channels if not c['is_private']]
     public_channels = {p['id']: p for p in public_channels}.values()
     for channel in public_channels:
         channels_to_add.append(Channel(
@@ -52,7 +58,11 @@ def all_messages():
         db.session.commit()
         thread_ts = [m['ts'] for m in messages if m.get('reply_count')]
         for tts in thread_ts:
-            replies = slack.get_all_replies(channel['id'], tts)
+            try:
+                replies = slack.get_all_replies(channel['id'], tts)
+            except JSONDecodeError:
+                app.logger.info("No reply")
+                continue
             replies = [r for r in replies if r.get('client_msg_id')]
             replies = {r['client_msg_id']: r for r in replies}.values()
             db.session.add_all(

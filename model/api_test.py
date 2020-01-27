@@ -5,6 +5,7 @@ if __name__ == '__main__':
     url = 'http://127.0.0.1:5000/predict'
     # url = 'http://model-api:5000/predict'
     # url = 'http://0.0.0.0:5000/predict'
+    # url = 'http://ea7a92c7.ngrok.io'
     input_text = 'My favorite flavor of ice cream is'
 
     val = {'input_text': input_text}

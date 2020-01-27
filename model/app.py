@@ -74,14 +74,21 @@ model.eval()
 def predict():
     if request.method == 'POST':
         lines = request.get_json(force=True)
-        input_text = lines['input_text']
+        print(lines)
+        tracker = lines['tracker']
+        latest_message = tracker['latest_message']
+        input_text = latest_message['text']
         time_now = time.time()
         output_text = get_output(input_text)
+        # output_text = 'this is a canned response'
         time_to_predict = time.time() - time_now
+        output = output_text + ' TIME_TO_PREDICT:' + str(time_to_predict)
         return jsonify({
-            'input_text': input_text,
-            'output_text': output_text,
-            'prediction_time': time_to_predict
+            "text": output,
+            "buttons": [],
+            "image": None,
+            "elements": [],
+            "attachments": []
             })
 
 if __name__ == '__main__':
